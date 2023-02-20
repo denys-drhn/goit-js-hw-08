@@ -6,8 +6,6 @@ import throttle from 'lodash.throttle';
 const iframe = document.querySelector('iframe');
 const player = new Vimeo(iframe);
 
-player.play();
-
 player.on('timeupdate', throttle(storeVideoTime, 1000));
 
 function storeVideoTime(data) {
@@ -18,25 +16,10 @@ function storeVideoTime(data) {
 
 const savedTime = localStorage.getItem('videoplayer-current-time');
 
-// const parsedTime = JSON.parse(savedTime);
-
-// player.setCurrentTime(parsedTime.seconds).then(function(seconds) {
-//     // seconds = the actual time that the player seeked to
-// }).catch(function(error) {
-// 	switch (error.name) {
-// 	case 'RangeError':
-// 	// the time was less than 0 or greater than the video’s duration
-// 	break;
-
-// 	default:
-// 	// some other error occurred
-// 	break;
-// 	}
-// });
-
-if (savedTime) {
+if (savedTime) { // *Потрібно  додати умову - коли localStorage пустий, то значення player.setCurrentTime не потрібно встановлювати.
 	const parsedTime = JSON.parse(savedTime);
-	player.setCurrentTime(parsedTime.seconds).then(function(seconds) {
+	player.setCurrentTime(parsedTime.seconds).then(function (seconds) {
+		player.play();
     // seconds = the actual time that the player seeked to
 }).catch(function(error) {
 	switch (error.name) {
